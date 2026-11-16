@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { SpotifyPlayer, type SpotifyController } from "@/components/SpotifyPlayer";
+import { SoundCloudPlayer, type SoundCloudController } from "@/components/SoundCloudPlayer";
 import { genres } from "@/data/genres";
 
 function Icon({ name, size = 20 }: { name: string; size?: number }) {
@@ -90,7 +90,7 @@ function Sidebar({ selectedId }: { selectedId: string }) {
 export default function HomePage() {
   const [selectedId, setSelectedId] = useState("house");
   const [query, setQuery] = useState("");
-  const [controller, setController] = useState<SpotifyController | null>(null);
+  const [controller, setController] = useState<SoundCloudController | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const selectedGenre = genres.find((genre) => genre.id === selectedId) ?? genres[0];
 
@@ -114,7 +114,7 @@ export default function HomePage() {
       document.getElementById("player")?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    controller.togglePlay();
+    controller.toggle();
   };
 
   const selectGenre = (id: string) => {
@@ -156,7 +156,7 @@ export default function HomePage() {
           </div>
 
           <section className="overview-grid" aria-label="선택 장르 및 카테고리">
-            <article className={`feature-card ${selectedGenre.artwork}`}>
+            <article className={`feature-card ${selectedGenre.artwork} ${isPlaying ? "is-playing" : ""}`}>
               <div className="feature-glow" />
               <div className="feature-topline">
                 <span className="live-label"><i /> {isPlaying ? "NOW PLAYING" : "SELECTED FREQUENCY"}</span>
@@ -180,13 +180,13 @@ export default function HomePage() {
                     className={`play-toggle ${isPlaying ? "is-playing" : ""}`}
                     onClick={togglePlayback}
                     aria-label={isPlaying ? "재생 일시정지" : "재생 시작"}
-                    title={controller ? (isPlaying ? "일시정지" : "재생") : "Spotify 플레이어로 이동"}
+                    title={controller ? (isPlaying ? "일시정지" : "재생") : "SoundCloud 플레이어로 이동"}
                   >
                     <Icon name={isPlaying ? "pause" : "play"} size={19} />
                   </button>
                   <div className="feature-play-label">
                     <strong>{isPlaying ? "IN THE GROOVE" : "TUNE IN"}</strong>
-                    <span>{controller ? "Spotify 플레이어와 연결됨" : "플레이리스트를 불러오는 중"}</span>
+                    <span>{controller ? "SoundCloud 플레이어와 연결됨" : "플레이리스트를 불러오는 중"}</span>
                   </div>
                   <div className="mini-wave" aria-hidden="true">
                     {[15, 25, 12, 32, 20, 37, 18, 29, 13, 24, 34, 17, 28, 12, 21].map((height, index) => (
@@ -283,7 +283,7 @@ export default function HomePage() {
                 {selectedGenre.artists.map((artist, index) => (
                   <a
                     className="artist-row"
-                    href={`https://open.spotify.com/search/${encodeURIComponent(artist.name)}`}
+                    href={`https://soundcloud.com/search?q=${encodeURIComponent(artist.name)}`}
                     target="_blank"
                     rel="noreferrer"
                     key={artist.name}
@@ -294,7 +294,7 @@ export default function HomePage() {
                   </a>
                 ))}
               </div>
-              <div className="artists-footnote"><span>ARTISTS TO START WITH</span><span>↗ SPOTIFY</span></div>
+              <div className="artists-footnote"><span>ARTISTS TO START WITH</span><span>↗ SOUNDCLOUD</span></div>
             </article>
 
             <article className="tracks-panel panel">
@@ -309,7 +309,7 @@ export default function HomePage() {
                 {selectedGenre.tracks.map((track, index) => (
                   <a
                     className="track-row"
-                    href={`https://open.spotify.com/search/${encodeURIComponent(`${track.artist} ${track.title}`)}`}
+                    href={`https://soundcloud.com/search?q=${encodeURIComponent(`${track.artist} ${track.title}`)}`}
                     target="_blank"
                     rel="noreferrer"
                     key={track.title}
@@ -331,31 +331,30 @@ export default function HomePage() {
             <article className="playlist-panel panel" id="player">
               <div className="panel-heading compact-heading">
                 <div>
-                  <span className="section-kicker">LISTEN IN SPOTIFY</span>
+                  <span className="section-kicker">LISTEN IN SOUNDCLOUD</span>
                   <h2>플레이리스트</h2>
                 </div>
-                <span className="spotify-mark" aria-label="Spotify"><i /><i /><i /></span>
+                <span className="soundcloud-mark" aria-label="SoundCloud"><i /><i /><i /><b /></span>
               </div>
               <div className="playlist-title-row">
                 <div className={`playlist-art ${selectedGenre.artwork}`} aria-hidden="true"><Icon name="disc" size={24} /></div>
                 <div><strong>{selectedGenre.playlistTitle}</strong><span>Curated by {selectedGenre.playlistCurator}</span></div>
                 <span className="playlist-state"><i /> EMBED</span>
               </div>
-              <SpotifyPlayer
-                playlistId={selectedGenre.playlistId}
+              <SoundCloudPlayer
                 playlistTitle={selectedGenre.playlistTitle}
                 playlistUrl={selectedGenre.playlistUrl}
                 onPlaybackChange={setIsPlaying}
                 onControllerReady={setController}
               />
-              <p className="playlist-note">Spotify 플레이어에서 재생하면 위 LP 애니메이션도 함께 움직여요.</p>
+              <p className="playlist-note">SoundCloud 플레이어에서 재생하면 위 LP 애니메이션도 함께 움직여요.</p>
             </article>
           </section>
 
           <footer className="site-footer">
             <a className="footer-logo" href="#top">EMFINDER<span>.</span></a>
             <span>MADE FOR THE LOVE OF ELECTRONIC MUSIC</span>
-            <a href="https://open.spotify.com" target="_blank" rel="noreferrer">POWERED BY SPOTIFY ↗</a>
+            <a href="https://soundcloud.com" target="_blank" rel="noreferrer">POWERED BY SOUNDCLOUD ↗</a>
           </footer>
         </main>
       </div>

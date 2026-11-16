@@ -22,7 +22,6 @@ export type Genre = {
   soundTags: string[];
   artists: ArtistPick[];
   tracks: TrackPick[];
-  playlistId: string;
   playlistTitle: string;
   playlistCurator: string;
   playlistUrl: string;
@@ -60,10 +59,9 @@ export const genres: Genre[] = [
         reason: "디스코풍 신스와 탄탄한 4/4 리듬이 만드는 하우스의 즐거움을 보여줘요.",
       },
     ],
-    playlistId: "2otQLmbi8QWHjDfq3eL0DC",
-    playlistTitle: "House Music 2026: Future Dance Hits",
-    playlistCurator: "Topsify",
-    playlistUrl: "https://open.spotify.com/playlist/2otQLmbi8QWHjDfq3eL0DC",
+    playlistTitle: "House Classics",
+    playlistCurator: "Daddy Dee",
+    playlistUrl: "https://soundcloud.com/user-277100694/sets/house-classics",
     artwork: "art-house",
   },
   {
@@ -96,10 +94,9 @@ export const genres: Genre[] = [
         reason: "명료한 훅과 규칙적인 킥 덕분에 테크노의 반복 구조를 잡기 쉬워요.",
       },
     ],
-    playlistId: "3CnE9v9FyUMoBT8ipvFAhA",
-    playlistTitle: "KNTXT Techno Essentials",
-    playlistCurator: "KNTXT",
-    playlistUrl: "https://open.spotify.com/playlist/3CnE9v9FyUMoBT8ipvFAhA",
+    playlistTitle: "Techno Classics — Old School",
+    playlistCurator: "EKM.CO",
+    playlistUrl: "https://soundcloud.com/ekm_co/sets/techno-classics-best-of-old",
     artwork: "art-techno",
   },
   {
@@ -132,10 +129,9 @@ export const genres: Genre[] = [
         reason: "익숙한 선율을 큰 신스와 댄스 비트로 풀어내 접근하기 쉬워요.",
       },
     ],
-    playlistId: "37i9dQZF1DXbtYAdenGE9U",
-    playlistTitle: "Trance Classics",
-    playlistCurator: "Spotify",
-    playlistUrl: "https://open.spotify.com/playlist/37i9dQZF1DXbtYAdenGE9U",
+    playlistTitle: "Golden Era Trance Classics",
+    playlistCurator: "Joanne Pattimore",
+    playlistUrl: "https://soundcloud.com/joanne-pattimore/sets/golden-era-trance-classics-2",
     artwork: "art-trance",
   },
   {
@@ -168,10 +164,9 @@ export const genres: Genre[] = [
         reason: "반복되는 구호와 강한 드롭으로 현대 DnB의 에너지를 바로 느낄 수 있어요.",
       },
     ],
-    playlistId: "6tlRHSvzXGvmOwLgV2XMHj",
-    playlistTitle: "Drum & Bass 24/7",
-    playlistCurator: "Hospital Records",
-    playlistUrl: "https://open.spotify.com/playlist/6tlRHSvzXGvmOwLgV2XMHj",
+    playlistTitle: "Drum & Bass Playlist (DnB)",
+    playlistCurator: "CELO",
+    playlistUrl: "https://soundcloud.com/celodnb/sets/drum-bass-playlist",
     artwork: "art-dnb",
   },
   {
@@ -204,10 +199,9 @@ export const genres: Genre[] = [
         reason: "선명한 신스 훅과 큰 저음 덕분에 덥스텝의 드롭을 쉽게 만날 수 있어요.",
       },
     ],
-    playlistId: "5Y3hC1SQTkWCEylRAyBiPA",
-    playlistTitle: "Old School UK Dubstep",
-    playlistCurator: "Chris Dawson",
-    playlistUrl: "https://open.spotify.com/playlist/5Y3hC1SQTkWCEylRAyBiPA",
+    playlistTitle: "UKF Dubstep 2017",
+    playlistCurator: "UKF",
+    playlistUrl: "https://soundcloud.com/ukf/sets/ukf-dubstep-2017",
     artwork: "art-dubstep",
   },
   {
@@ -240,10 +234,9 @@ export const genres: Genre[] = [
         reason: "자연의 풍경처럼 느린 음색 변화와 여백을 감상할 수 있어요.",
       },
     ],
-    playlistId: "37i9dQZF1DWUrPBdYfoJvz",
-    playlistTitle: "Ambient Essentials",
-    playlistCurator: "Spotify",
-    playlistUrl: "https://open.spotify.com/playlist/37i9dQZF1DWUrPBdYfoJvz",
+    playlistTitle: "Anti-Anxiety Ambient: Calm",
+    playlistCurator: "SoundCloud Circuits",
+    playlistUrl: "https://soundcloud.com/soundcloud-circuits/sets/calm-anti-anxiety-ambient",
     artwork: "art-ambient",
   },
   {
@@ -276,10 +269,9 @@ export const genres: Genre[] = [
         reason: "흐릿한 테이프 질감과 유기적인 리듬이 IDM의 감성적인 면을 보여줘요.",
       },
     ],
-    playlistId: "3P9lEX8RzKkD3hNVvnoMc5",
-    playlistTitle: "The Sound of Intelligent Dance Music",
-    playlistCurator: "The Sounds of Spotify",
-    playlistUrl: "https://open.spotify.com/playlist/3P9lEX8RzKkD3hNVvnoMc5",
+    playlistTitle: "IDM · Intelligent Dance Music",
+    playlistCurator: "EMEP",
+    playlistUrl: "https://soundcloud.com/emep/sets/idm",
     artwork: "art-idm",
   },
   {
@@ -312,10 +304,9 @@ export const genres: Genre[] = [
         reason: "반짝이는 신스와 색소폰, 큰 후렴이 감성적인 신스웨이브의 매력이에요.",
       },
     ],
-    playlistId: "5iDmc6jnIpwCQ7UuBMCMAO",
-    playlistTitle: "Synthwave · Retro · 80s Nights",
-    playlistCurator: "PLAYLISTED",
-    playlistUrl: "https://open.spotify.com/playlist/5iDmc6jnIpwCQ7UuBMCMAO",
+    playlistTitle: "New Era Synthwave",
+    playlistCurator: "SoundCloud Stories",
+    playlistUrl: "https://soundcloud.com/soundcloud-stories/sets/synthwave",
     artwork: "art-synthwave",
   },
 ];
