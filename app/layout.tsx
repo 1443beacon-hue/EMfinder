@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "EMfinder — 전자음악 장르 가이드",
   description:
-    "하우스부터 신스웨이브까지, 전자음악의 결을 발견하고 SoundCloud로 들어보세요.",
+    "하우스부터 하이퍼팝과 아트팝까지 16개 장르를 탐색하고, SoundCloud 플레이리스트와 공연 소식을 만나보세요.",
 };
 
 export const viewport: Viewport = {

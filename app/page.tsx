@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ArtistList } from "@/components/ArtistList";
 import { SoundCloudPlayer, type SoundCloudController } from "@/components/SoundCloudPlayer";
 import { genres } from "@/data/genres";
+import { eventCalendarUrl, sceneItems, sceneUpdatedAt } from "@/data/scene";
 
 function Icon({ name, size = 20 }: { name: string; size?: number }) {
   const common = {
@@ -98,12 +100,11 @@ export default function HomePage() {
     const normalized = query.trim().toLocaleLowerCase("ko");
     if (!normalized) return genres;
 
-    return genres.filter((genre) => {
+      return genres.filter((genre) => {
       const searchable = [
         genre.name,
         genre.english,
         ...genre.artists.map((artist) => artist.name),
-        ...genre.tracks.flatMap((track) => [track.title, track.artist]),
       ].join(" ").toLocaleLowerCase("ko");
       return searchable.includes(normalized);
     });
@@ -152,7 +153,7 @@ export default function HomePage() {
         <main className="main-content">
           <div className="eyebrow-row">
             <span className="eyebrow"><i /> ELECTRONIC MUSIC FIELD GUIDE</span>
-            <span className="issue-label">VOL. 01 <span>—</span> 08 GENRES</span>
+            <span className="issue-label">VOL. 01 <span>—</span> 16 GENRES</span>
           </div>
 
           <section className="overview-grid" aria-label="선택 장르 및 카테고리">
@@ -160,15 +161,29 @@ export default function HomePage() {
               <div className="feature-glow" />
               <div className="feature-topline">
                 <span className="live-label"><i /> {isPlaying ? "NOW PLAYING" : "SELECTED FREQUENCY"}</span>
-                <span className="feature-index">{selectedGenre.number} / 08</span>
+                <span className="feature-index">{selectedGenre.number} / 16</span>
               </div>
               <div className="turntable" aria-label={isPlaying ? "회전 중인 LP" : "정지한 LP"}>
                 <div className={`record ${isPlaying ? "is-spinning" : ""}`}>
                   <div className="record-label"><span>EM<br />FINDER</span><i /></div>
                 </div>
                 <div className="record-light" />
-                <div className="tonearm"><span className="tonearm-head" /><i /></div>
+                <div className="tonearm" aria-hidden="true">
+                  <span className="tonearm-pivot" />
+                  <span className="tonearm-stick" />
+                  <span className="tonearm-head" />
+                  <i />
+                </div>
                 <div className="platter-mark"><span>33⅓</span><small>RPM</small></div>
+              </div>
+              <div className={`soundwave-visualizer ${isPlaying ? "is-active" : ""}`} aria-hidden="true">
+                <div className="signal-heading"><span>{isPlaying ? "SIGNAL / LIVE" : "SIGNAL / READY"}</span><i /></div>
+                <div className="signal-bars">
+                  {[14, 24, 38, 19, 31, 51, 26, 42, 18, 34, 56, 28, 45, 22, 36, 50, 24, 39, 16, 30, 44].map((height, index) => (
+                    <i key={index} style={{ "--bar-height": `${height}px`, "--bar-delay": `${index * -47}ms` } as React.CSSProperties} />
+                  ))}
+                </div>
+                <span className="signal-caption">AUDIO VISUALIZER <b>·</b> 44.1 KHZ</span>
               </div>
               <div className="feature-copy">
                 <div className="genre-kicker">GENRE / {selectedGenre.short}</div>
@@ -202,11 +217,11 @@ export default function HomePage() {
               <div className="section-heading category-heading">
                 <div>
                   <span className="section-kicker">BROWSE BY FREQUENCY</span>
-                  <h2>장르를 <span>탐색하세요</span></h2>
+                  <h2>Explore <span>Genres</span></h2>
                 </div>
-                <span className="count-label">{filteredGenres.length.toString().padStart(2, "0")} <i>/ 08</i></span>
+                <span className="count-label">{filteredGenres.length.toString().padStart(2, "0")} <i>/ 16</i></span>
               </div>
-              <div className="category-chips" role="list" aria-label="전자음악 장르">
+              <div className="category-chips" aria-label="Genre categories">
                 {genres.map((genre) => (
                   <button
                     type="button"
@@ -215,7 +230,7 @@ export default function HomePage() {
                     onClick={() => selectGenre(genre.id)}
                     aria-pressed={selectedId === genre.id}
                   >
-                    <span>{genre.name}</span>
+                    <span>{genre.english}</span>
                   </button>
                 ))}
               </div>
@@ -234,8 +249,8 @@ export default function HomePage() {
                       <span className="genre-card-number">{genre.number}</span>
                       <span className="genre-card-art" aria-hidden="true"><i /><i /><i /></span>
                       <span className="genre-card-info">
-                        <strong>{genre.name}</strong>
-                        <small>{genre.english}</small>
+                        <strong>{genre.english}</strong>
+                        <small>{genre.name}</small>
                       </span>
                       <span className="genre-card-arrow"><Icon name="arrow" size={14} /></span>
                     </button>
@@ -258,7 +273,7 @@ export default function HomePage() {
                   <span className="section-kicker">GET TO KNOW THE SOUND</span>
                   <h2>{selectedGenre.english}<span className="heading-dot">.</span></h2>
                 </div>
-                <span className="panel-index">FIELD NOTE {selectedGenre.number}</span>
+                <span className="panel-index">{selectedGenre.scope === "CROSSOVER" ? "ELECTRONIC CROSSOVER" : "CORE ELECTRONIC"} · {selectedGenre.number}</span>
               </div>
               <p className="genre-description">{selectedGenre.description}</p>
               <div className="sound-tags" aria-label="사운드 키워드">
@@ -268,63 +283,54 @@ export default function HomePage() {
                 <span className="tip-icon"><Icon name="wave" size={17} /></span>
                 <div><small>LISTEN FOR THIS</small><p>{selectedGenre.listeningTip}</p></div>
               </div>
+              <a className="genre-reading-link" href={selectedGenre.readingUrl} target="_blank" rel="noreferrer">
+                <span>FURTHER READING / {selectedGenre.readingSource.toUpperCase()}</span>
+                <strong>{selectedGenre.readingTitle}</strong>
+                <Icon name="arrow" size={14} />
+              </a>
               <div className="panel-decoration" aria-hidden="true">EM<span>—</span>FM</div>
             </article>
 
             <article className="artists-panel panel">
               <div className="panel-heading compact-heading">
                 <div>
-                  <span className="section-kicker">KEY NAMES</span>
+                  <span className="section-kicker">KEY NAMES / IMAGE NOTES</span>
                   <h2>대표 아티스트</h2>
                 </div>
                 <span className="panel-index">03 ARTISTS</span>
               </div>
-              <div className="artist-list">
-                {selectedGenre.artists.map((artist, index) => (
-                  <a
-                    className="artist-row"
-                    href={`https://soundcloud.com/search?q=${encodeURIComponent(artist.name)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    key={artist.name}
-                  >
-                    <span className={`artist-avatar avatar-${index + 1}`} aria-hidden="true"><i>{artist.name.charAt(0)}</i><b /></span>
-                    <span className="artist-meta"><strong>{artist.name}</strong><small>{artist.note}</small></span>
-                    <span className="artist-link"><Icon name="arrow" size={15} /></span>
-                  </a>
-                ))}
-              </div>
-              <div className="artists-footnote"><span>ARTISTS TO START WITH</span><span>↗ SOUNDCLOUD</span></div>
+              <ArtistList artists={selectedGenre.artists} />
+              <div className="artists-footnote"><span>ALBUM ART FIRST · ARTIST PHOTO IF NEEDED</span><span>IMAGES ↗ WIKIMEDIA</span></div>
             </article>
 
-            <article className="tracks-panel panel">
+            <article className="scene-panel panel" id="news">
               <div className="panel-heading compact-heading">
                 <div>
-                  <span className="section-kicker">FIRST LISTEN / 02 PICKS</span>
-                  <h2>처음 듣는 두 곡</h2>
+                  <span className="section-kicker">LIVE & SCENE / SEOUL</span>
+                  <h2>전자음악 레이더</h2>
                 </div>
-                <span className="panel-index">A / B</span>
+                <span className="panel-index">UPDATED {sceneUpdatedAt}</span>
               </div>
-              <div className="track-list">
-                {selectedGenre.tracks.map((track, index) => (
-                  <a
-                    className="track-row"
-                    href={`https://soundcloud.com/search?q=${encodeURIComponent(`${track.artist} ${track.title}`)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    key={track.title}
-                  >
-                    <span className="track-index">0{index + 1}</span>
-                    <span className="track-cover" aria-hidden="true"><i /><b>{selectedGenre.short.slice(0, 2)}</b></span>
-                    <span className="track-meta">
-                      <span className={`track-badge ${track.label === "입문 추천" ? "is-starter" : ""}`}>{track.label}</span>
-                      <strong>{track.title}</strong>
-                      <small>{track.artist}</small>
-                    </span>
-                    <span className="track-open"><Icon name="arrow" size={15} /></span>
-                    <span className="track-reason">{track.reason}</span>
-                  </a>
+              <div className="scene-list">
+                {sceneItems.map((item) => (
+                  <article className="scene-item" key={item.title}>
+                    <div className="scene-date"><small>{item.month}</small><strong>{item.day}</strong></div>
+                    <div className="scene-copy">
+                      <span className="scene-kind">{item.kind}</span>
+                      <strong>{item.title}</strong>
+                      <p>{item.description}</p>
+                      <small className="scene-details">{item.details}</small>
+                      <a className="scene-source" href={item.sourceUrl} target="_blank" rel="noreferrer">SOURCE / {item.source} ↗</a>
+                    </div>
+                    <a className="scene-open" href={item.url} target="_blank" rel="noreferrer" aria-label={`${item.linkLabel}: ${item.title}`}>
+                      <Icon name="arrow" size={15} />
+                    </a>
+                  </article>
                 ))}
+              </div>
+              <div className="scene-footer">
+                <span>일정은 변동될 수 있어요. 예매처에서 최신 정보를 확인하세요.</span>
+                <a href={eventCalendarUrl} target="_blank" rel="noreferrer">ALL SEOUL EVENTS ↗</a>
               </div>
             </article>
 
