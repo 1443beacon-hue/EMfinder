@@ -100,7 +100,7 @@ export default function HomePage() {
     const normalized = query.trim().toLocaleLowerCase("ko");
     if (!normalized) return genres;
 
-      return genres.filter((genre) => {
+    return genres.filter((genre) => {
       const searchable = [
         genre.name,
         genre.english,
@@ -138,8 +138,8 @@ export default function HomePage() {
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="장르, 아티스트, 곡 검색"
-              aria-label="장르, 아티스트, 곡 검색"
+              placeholder="장르, 아티스트 검색"
+              aria-label="장르, 아티스트 검색"
             />
             <kbd>⌘ K</kbd>
           </div>
